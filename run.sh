@@ -19,8 +19,18 @@ java -jar ./build/libs/crc-calculator.jar warmup
 ##### Pass the params #####
 ###########################
 
-ITERATIONS=1000000
-MESSAGE="01 10 00 11 00 03 06 1A C4 BA D0"
+# Fetch from sh arguments or set defaults
+if [ $# -gt 0 ]; then
+  ITERATIONS=$1
+else
+  ITERATIONS=1000000
+fi
+
+if [ $# -gt 1 ]; then
+  MESSAGE=$2
+else
+  MESSAGE="01 10 00 11 00 03 06 1A C4 BA D0"
+fi
 
 # Run the CRC calculation with the specified parameters
 java \
@@ -34,4 +44,4 @@ java \
   -XX:+PerfDisableSharedMem \
   -Xbatch \
   -jar ./build/libs/crc-calculator.jar \
-  crc -i $ITERATIONS "$MESSAGE"
+  crc -i "$ITERATIONS" "$MESSAGE"

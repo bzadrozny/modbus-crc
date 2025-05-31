@@ -18,10 +18,13 @@ repositories {
 }
 
 val clicktVersion = "5.0.3"
+val junitVersion = "5.11.1"
 
 dependencies {
     implementation("com.github.ajalt.clikt:clikt:$clicktVersion")
+
     testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
 
 tasks.test {
@@ -36,6 +39,9 @@ tasks {
     named<ShadowJar>("shadowJar") {
         archiveFileName.set("crc-calculator.jar")
         mergeServiceFiles()
+        exclude("**/CrcCalculatorTest.class")
+        exclude("**/kotlin/test/**")
+        exclude("**/org/junit/**")
     }
 
     build {
