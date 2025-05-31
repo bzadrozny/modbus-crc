@@ -48,5 +48,5 @@ java \
   -XX:+DisableExplicitGC \
   -XX:+PerfDisableSharedMem \
   -Xbatch \
-  -jar build/libs/crc-calculator.jar 10000 "01 10 00 11 00 03 06 1A C4 BA D0"
+  -jar build/libs/crc-calculator.jar crc "01 10 00 11 00 03 06 1A C4 BA D0" -i 10000
 ```
