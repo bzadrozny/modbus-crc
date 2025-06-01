@@ -14,21 +14,23 @@ class CrcCmd : CliktCommand(name = "crc") {
 
     private val input: String by argument("message", help = "Hex byte sequence (max 256 bytes, e.g. 01 10 00 11 ...)")
         .convert { it.replace(" ", "") }
-        .validate { validateInput(it) }
+        .validate { if (!validateInput(it)) fail("Input sequence must be max 256 bytes and must be in hexadecimal notation, e.g. 01AF 2A D") }
 
-    private val iterations: Int by option("--iterations", "-i", help = "Number of iterations to run (default: 10000)")
-        .convert { it.toInt() }
+    private val iterations: Long by option("--iterations", "-i", help = "Number of iterations to run (default: 10000)")
+        .convert { it.toLong() }
         .default(1)
         .validate { if (it <= 0 || it > 1_000_000_000) fail("Iterations must be between 1 and 10^9") }
 
     override fun run() {
         val message = input.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
         println("Message = %s".format(message.joinToString(" ") { "0x%02X".format(it) }))
+
+        val processingIterations = iterations.toInt()
         println("Iterations = $iterations")
 
         var crc = 0
         val startTime = System.nanoTime()
-        repeat(iterations) {
+        repeat(processingIterations) {
             crc = CrcCalculator.calculate(message)
         }
         val endTime = System.nanoTime()
