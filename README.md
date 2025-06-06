@@ -10,7 +10,7 @@ A command-line tool for calculating CRC (Cyclic Redundancy Check) values for byt
 
 ## Requirements
 
-- Java 21 or higher
+- Java 23 or higher
 - Gradle (for building)
 
 ## Usage

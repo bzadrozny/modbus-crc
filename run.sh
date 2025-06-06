@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Check if java is installed and the version is at least 21
+# Check if java is installed and the version is at least 23
 if ! command -v java &> /dev/null; then
-    echo "Java is not installed. Please install Java 21 or higher."
+    echo "Java is not installed. Please install Java 23 or higher."
     exit 1
 fi
 
 JAVA_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
-if [[ "${JAVA_VERSION%%.*}" -lt 21 ]]; then
-    echo "Java version is $JAVA_VERSION. Please install Java 21 or higher."
+if [[ "${JAVA_VERSION%%.*}" -lt 23 ]]; then
+    echo "Java version is $JAVA_VERSION. Please install Java 23 or higher."
     exit 1
 fi
 
