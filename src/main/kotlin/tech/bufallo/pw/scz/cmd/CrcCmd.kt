@@ -12,9 +12,9 @@ import tech.bufallo.pw.scz.crc.CrcCalculator
 
 class CrcCmd : CliktCommand(name = "crc") {
 
-    private val input: String by argument("message", help = "Hex byte sequence (max 256 bytes, e.g. 01 10 00 11 ...)")
+    private val input: String by argument("message", help = "Hex byte sequence (max 256 bytes, e.g. '01 10 00 11 BC ...')")
         .convert { it.replace(" ", "") }
-        .validate { if (!validateInput(it)) fail("Input sequence must be max 256 bytes and must be in hexadecimal notation, e.g. 01AF 2A D") }
+        .validate { if (!validateHexString(it)) fail("Input sequence must be max 256 bytes and must be in hexadecimal notation, e.g. 01AF 2A D") }
 
     private val iterations: Long by option("--iterations", "-i", help = "Number of iterations to run (default: 10000)")
         .convert { it.toLong() }
@@ -39,8 +39,9 @@ class CrcCmd : CliktCommand(name = "crc") {
         println("Time taken: %.6f seconds".format((endTime - startTime) / 1e9))
     }
 
-    private fun validateInput(input: String): Boolean {
+    private fun validateHexString(input: String): Boolean {
         return input.all { it.isDigit() || (it in 'A'..'F') || (it in 'a'..'f') }
+            && input.length <= 512 // 256 bytes * 2 hex digits per byte
     }
 
     private fun convertHexStringIntoByteArray(input: String): ByteArray = input
