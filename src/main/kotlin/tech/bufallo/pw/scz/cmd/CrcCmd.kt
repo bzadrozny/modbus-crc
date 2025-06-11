@@ -22,7 +22,7 @@ class CrcCmd : CliktCommand(name = "crc") {
         .validate { if (it <= 0 || it > 1_000_000_000) fail("Iterations must be between 1 and 10^9") }
 
     override fun run() {
-        val message = input.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+        val message = convertHexStringIntoByteArray(input)
         println("Message = %s".format(message.joinToString(" ") { "0x%02X".format(it) }))
 
         val processingIterations = iterations.toInt()
@@ -42,4 +42,11 @@ class CrcCmd : CliktCommand(name = "crc") {
     private fun validateInput(input: String): Boolean {
         return input.all { it.isDigit() || (it in 'A'..'F') || (it in 'a'..'f') }
     }
+
+    private fun convertHexStringIntoByteArray(input: String): ByteArray = input
+        .reversed()
+        .chunked(2)
+        .map { it.reversed().toUInt(16).toByte() }
+        .reversed()
+        .toByteArray()
 }
